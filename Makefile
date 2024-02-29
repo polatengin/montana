@@ -20,3 +20,7 @@ unittest:
 	@echo "Testing..."
 	TF_ACC=1 go test -v ./...
 
+.PHONY: test
+test:
+	make build
+	export TF_CLI_CONFIG_FILE="$(ROOT_DIR)/terraform.tfrc" ; cd "$(ROOT_DIR)/examples/resources/montana_palindrome" && terraform apply -auto-approve
