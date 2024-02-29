@@ -23,18 +23,18 @@ clean:
 
 .PHONY: build
 build:
-	make clean
+	$(MAKE) clean
 	@echo "Building..."
 	@go build -o .bin/ ./...
 	mv .bin/montana .bin/terraform-provider-montana
 
 .PHONY: unittest
 unittest:
-	make build
+	$(MAKE) build
 	@echo "Testing..."
 	TF_ACC=1 go test -v ./...
 
 .PHONY: test
 test:
-	make build
+	$(MAKE) build
 	export TF_CLI_CONFIG_FILE="$(ROOT_DIR)/terraform.tfrc" ; cd "$(ROOT_DIR)/examples/resources/montana_palindrome" && terraform apply -auto-approve
