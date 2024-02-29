@@ -3,7 +3,6 @@ package provider
 import (
 	"context"
 	"fmt"
-	"net/http"
 
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -13,6 +12,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/polatengin/montana/internal/api"
 )
 
 var _ resource.Resource = &PalindromeResource{}
@@ -23,7 +23,7 @@ func NewPalindromeResource() resource.Resource {
 }
 
 type PalindromeResource struct {
-	client *http.Client
+	client *api.ApiClient
 }
 
 type PalindromeResourceModel struct {
@@ -67,7 +67,7 @@ func (r *PalindromeResource) Configure(ctx context.Context, req resource.Configu
 		return
 	}
 
-	client, ok := req.ProviderData.(*http.Client)
+	client, ok := req.ProviderData.(*api.ApiClient)
 
 	if !ok {
 		resp.Diagnostics.AddError(
@@ -89,21 +89,6 @@ func (r *PalindromeResource) Create(ctx context.Context, req resource.CreateRequ
 	if resp.Diagnostics.HasError() {
 		return
 	}
-
-	httpReq, err := http.NewRequestWithContext(ctx, http.MethodPost, "https://example.com/api/resource", nil)
-	if err != nil {
-		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to create palindrome, got error: %s", err))
-		return
-	}
-	httpReq.Header.Set("Content-Type", "application/json")
-
-	httpResp, err := r.client.Do(httpReq)
-	if err != nil {
-		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to create palindrome, got error: %s", err))
-		return
-	}
-
-	defer httpResp.Body.Close()
 
 	data.Id = types.StringValue("palindrome-id")
 

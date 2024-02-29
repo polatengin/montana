@@ -2,7 +2,6 @@ package provider
 
 import (
 	"context"
-	"net/http"
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/function"
@@ -32,10 +31,29 @@ func (p *MontanaProvider) Metadata(ctx context.Context, req provider.MetadataReq
 
 func (p *MontanaProvider) Schema(ctx context.Context, req provider.SchemaRequest, resp *provider.SchemaResponse) {
 	resp.Schema = schema.Schema{
+		Description:         "Montana Provider",
+		MarkdownDescription: "Montana Provider",
 		Attributes: map[string]schema.Attribute{
-			"endpoint": schema.StringAttribute{
-				MarkdownDescription: "Example provider attribute",
+			"use_cli": schema.BoolAttribute{
+				Description:         "Flag to indicate whether to use the CLI for authentication",
+				MarkdownDescription: "Flag to indicate whether to use the CLI for authentication. ",
 				Optional:            true,
+			},
+			"tenant_id": schema.StringAttribute{
+				Description:         "The id of the AAD tenant that Montana uses to authenticate with",
+				MarkdownDescription: "The id of the AAD tenant that Montana uses to authenticate with",
+				Optional:            true,
+			},
+			"client_id": schema.StringAttribute{
+				Description:         "The client id of the Montana app registration",
+				MarkdownDescription: "The client id of the Montana app registration",
+				Optional:            true,
+			},
+			"client_secret": schema.StringAttribute{
+				Description:         "The secret of the Montana app registration",
+				MarkdownDescription: "The secret of the Montana app registration",
+				Optional:            true,
+				Sensitive:           true,
 			},
 		},
 	}
@@ -50,9 +68,12 @@ func (p *MontanaProvider) Configure(ctx context.Context, req provider.ConfigureR
 		return
 	}
 
-	client := http.DefaultClient
-	resp.DataSourceData = client
-	resp.ResourceData = client
+	providerClient := api.ProviderClient{
+		Config: p.Config,
+		Api:    p.Api,
+	}
+	resp.DataSourceData = &providerClient
+	resp.ResourceData = &providerClient
 }
 
 func (p *MontanaProvider) Resources(ctx context.Context) []func() resource.Resource {
