@@ -25,7 +25,6 @@ type MontanaProviderModel struct {
 
 func (p *MontanaProvider) Metadata(ctx context.Context, req provider.MetadataRequest, resp *provider.MetadataResponse) {
 	resp.TypeName = "montana"
-	resp.Version = p.version
 }
 
 func (p *MontanaProvider) Schema(ctx context.Context, req provider.SchemaRequest, resp *provider.SchemaResponse) {
@@ -69,10 +68,8 @@ func (p *MontanaProvider) Functions(ctx context.Context) []func() function.Funct
 	return []func() function.Function{}
 }
 
-func New(version string) func() provider.Provider {
+func New() func() provider.Provider {
 	return func() provider.Provider {
-		return &MontanaProvider{
-			version: version,
-		}
+		return &MontanaProvider{}
 	}
 }

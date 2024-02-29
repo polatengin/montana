@@ -13,8 +13,6 @@ import (
 
 //go:generate go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs generate
 
-var version string = "dev"
-
 func main() {
 	var debug bool
 
@@ -26,7 +24,7 @@ func main() {
 		Debug:   debug,
 	}
 
-	err := providerserver.Serve(context.Background(), provider.New(version), opts)
+	err := providerserver.Serve(context.Background(), provider.New(), opts)
 
 	if err != nil {
 		log.Fatal(err.Error())
