@@ -9,11 +9,11 @@ default: build
 
 .PHONY: help
 help:
-	@echo "Usage: make [target]"
+	@echo "$(YELLOW)Usage:$(RESET) make $(GREEN)[target]$(RESET)"
 	@echo ""
-	@echo "Targets:"
+	@echo "$(YELLOW)Targets:$(RESET)"
 	@echo "  clean           - Clean up"
-	@echo "  build (default) - Build the provider"
+	@echo "  build $(YELLOW)(default)$(RESET) - Build the provider"
 	@echo "  unittest        - Run unit tests"
 	@echo "  test            - Run apply and tests the results"
 
