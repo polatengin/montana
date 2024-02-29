@@ -10,13 +10,16 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/provider/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/polatengin/montana/internal/api"
+	"github.com/polatengin/montana/internal/config"
 )
 
 var _ provider.Provider = &MontanaProvider{}
 var _ provider.ProviderWithFunctions = &MontanaProvider{}
 
 type MontanaProvider struct {
-	version string
+	Config *config.ProviderConfig
+	Api    *api.ApiClient
 }
 
 type MontanaProviderModel struct {
