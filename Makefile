@@ -1,4 +1,8 @@
-ROOT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
+GREEN := $(shell tput -Txterm setaf 2)
+YELLOW := $(shell tput -Txterm setaf 3)
+WHITE := $(shell tput -Txterm setaf 7)
+RESET := $(shell tput -Txterm sgr0)
+
 
 default: build
 
