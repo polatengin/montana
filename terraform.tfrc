@@ -1,0 +1,8 @@
+provider_installation {
+
+  dev_overrides {
+    "hashicorp/montana" = "/home/azureuser/p/montana/.bin"
+  }
+
+  direct {}
+}
