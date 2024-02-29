@@ -5,6 +5,15 @@ RESET := $(shell tput -Txterm sgr0)
 
 ROOT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
+ifeq ($(command), plan)
+TARGET_COMMAND := plan
+TARGET_DIR := data-sources
+else
+TARGET_DIR := resources
+TARGET_COMMAND := apply -auto-approve
+endif
+
+
 default: build
 
 .PHONY: help
@@ -38,4 +47,4 @@ unittest:
 .PHONY: test
 test:
 	$(MAKE) build
-	export TF_CLI_CONFIG_FILE="$(ROOT_DIR)/terraform.tfrc" ; cd "$(ROOT_DIR)/examples/resources/montana_palindrome" && terraform apply -auto-approve
+	export TF_CLI_CONFIG_FILE="$(ROOT_DIR)/terraform.tfrc" ; cd "$(ROOT_DIR)/examples/$(TARGET_DIR)/montana_palindrome" && terraform $(TARGET_COMMAND)
