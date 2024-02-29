@@ -2,6 +2,16 @@ ROOT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
 default: build
 
+.PHONY: help
+help:
+	@echo "Usage: make [target]"
+	@echo ""
+	@echo "Targets:"
+	@echo "  clean           - Clean up"
+	@echo "  build (default) - Build the provider"
+	@echo "  unittest        - Run unit tests"
+	@echo "  test            - Run apply and tests the results"
+
 .PHONY: clean
 clean:
 	@echo "Cleaning..."
