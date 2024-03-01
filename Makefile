@@ -47,4 +47,4 @@ unittest:
 .PHONY: test
 test:
 	$(MAKE) build
-	export TF_CLI_CONFIG_FILE="$(ROOT_DIR)/terraform.tfrc" ; cd "$(ROOT_DIR)/examples/$(TARGET_DIR)/montana_palindrome" && terraform $(TARGET_COMMAND)
+	export TF_CLI_CONFIG_FILE="$(ROOT_DIR)/terraform.tfrc" ; cd "$(ROOT_DIR)/examples/$(TARGET_DIR)/montana_joke" && terraform $(TARGET_COMMAND)
