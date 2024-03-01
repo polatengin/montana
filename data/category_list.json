@@ -1,32 +1,30 @@
-{
-  "category-list": [
-    {
-      "id": 0,
-      "name": "Any"
-    },
-    {
-      "id": 1,
-      "name": "Programming"
-    },
-    {
-      "id": 2,
-      "name": "Misc"
-    },
-    {
-      "id": 3,
-      "name": "Dark"
-    },
-    {
-      "id": 4,
-      "name": "Pun"
-    },
-    {
-      "id": 5,
-      "name": "Spooky"
-    },
-    {
-      "id": 6,
-      "name": "Christmas"
-    }
-  ]
-}
+[
+  {
+    "id": 0,
+    "name": "Any"
+  },
+  {
+    "id": 1,
+    "name": "Programming"
+  },
+  {
+    "id": 2,
+    "name": "Misc"
+  },
+  {
+    "id": 3,
+    "name": "Dark"
+  },
+  {
+    "id": 4,
+    "name": "Pun"
+  },
+  {
+    "id": 5,
+    "name": "Spooky"
+  },
+  {
+    "id": 6,
+    "name": "Christmas"
+  }
+]
