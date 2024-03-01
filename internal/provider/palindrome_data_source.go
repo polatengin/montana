@@ -3,12 +3,12 @@ package provider
 import (
 	"context"
 	"fmt"
-	"net/http"
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/polatengin/montana/internal/api"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -19,7 +19,7 @@ func NewPalindromeDataSource() datasource.DataSource {
 }
 
 type PalindromeDataSource struct {
-	client *http.Client
+	client *api.ProviderClient
 }
 
 type PalindromeDataSourceModel struct {
@@ -53,7 +53,7 @@ func (d *PalindromeDataSource) Configure(ctx context.Context, req datasource.Con
 		return
 	}
 
-	client, ok := req.ProviderData.(*http.Client)
+	client, ok := req.ProviderData.(*api.ProviderClient)
 
 	if !ok {
 		resp.Diagnostics.AddError(
