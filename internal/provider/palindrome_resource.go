@@ -8,7 +8,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
@@ -23,7 +22,7 @@ func NewPalindromeResource() resource.Resource {
 }
 
 type PalindromeResource struct {
-	client *api.ApiClient
+	client *api.ProviderClient
 }
 
 type PalindromeResourceModel struct {
@@ -60,7 +59,7 @@ func (r *PalindromeResource) Configure(ctx context.Context, req resource.Configu
 		return
 	}
 
-	client, ok := req.ProviderData.(*api.ApiClient)
+	client, ok := req.ProviderData.(*api.ProviderClient)
 
 	if !ok {
 		resp.Diagnostics.AddError(
