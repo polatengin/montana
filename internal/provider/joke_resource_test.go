@@ -36,10 +36,10 @@ func TestAccJokeResource(t *testing.T) {
 	})
 }
 
-func testAccJokeResourceConfig(configurableAttribute string) string {
+func testAccJokeResourceConfig(text string) string {
 	return fmt.Sprintf(`
 resource "montana_joke" "test" {
   text = %[1]q
 }
-`, configurableAttribute)
+`, text)
 }

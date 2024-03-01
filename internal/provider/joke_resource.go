@@ -26,8 +26,8 @@ type JokeResource struct {
 }
 
 type JokeResourceModel struct {
-	ConfigurableAttribute types.String `tfsdk:"text"`
-	Id                    types.String `tfsdk:"id"`
+	Text types.String `tfsdk:"text"`
+	Id   types.String `tfsdk:"id"`
 }
 
 func (r *JokeResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
