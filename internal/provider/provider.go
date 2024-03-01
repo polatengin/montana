@@ -22,7 +22,11 @@ type MontanaProvider struct {
 }
 
 type MontanaProviderModel struct {
-	Endpoint types.String `tfsdk:"endpoint"`
+	UseCli types.Bool `tfsdk:"use_cli"`
+
+	TenantId     types.String `tfsdk:"tenant_id"`
+	ClientId     types.String `tfsdk:"client_id"`
+	ClientSecret types.String `tfsdk:"client_secret"`
 }
 
 func (p *MontanaProvider) Metadata(ctx context.Context, req provider.MetadataRequest, resp *provider.MetadataResponse) {
