@@ -8,14 +8,9 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"strings"
-
-	"github.com/polatengin/montana/internal/config"
 )
 
 type ProviderClient struct {
-	Config *config.ProviderConfig
-	Api    *ApiClient
 }
 
 type ApiHttpResponse struct {
@@ -23,52 +18,7 @@ type ApiHttpResponse struct {
 	BodyAsBytes []byte
 }
 
-func (client *ApiClient) GetConfig() *config.ProviderConfig {
-	return client.Config
-}
-
-type ApiClient struct {
-	Config   *config.ProviderConfig
-	BaseAuth *Auth
-}
-
-func NewApiClientBase(config *config.ProviderConfig, baseAuth *Auth) *ApiClient {
-	return &ApiClient{
-		Config:   config,
-		BaseAuth: baseAuth,
-	}
-}
-
-func TryGetScopeFromURL(url string) (string, error) {
-	switch {
-	case strings.LastIndex(url, "api.bap.microsoft.com") != -1,
-		strings.LastIndex(url, "api.powerapps.com") != -1:
-
-		return "https://service.powerapps.com/.default", nil
-	case strings.LastIndex(url, "api.powerplatform.com") != -1:
-
-		return "https://api.powerplatform.com/.default", nil
-	case strings.LastIndex(url, ".com/") != -1:
-
-		scope := strings.SplitAfterN(url, ".com/", 2)[0]
-		scope = scope + ".default"
-		return scope, nil
-	default:
-		return "", errors.New("Unable to determine scope from url: '" + url + "'. Please provide your own scope.")
-	}
-}
-
-func (client *ApiClient) Execute(ctx context.Context, method string, url string, headers http.Header, body interface{}, acceptableStatusCodes []int, responseObj interface{}) (*ApiHttpResponse, error) {
-	scope, err := TryGetScopeFromURL(url)
-	if err != nil {
-		return nil, err
-	}
-
-	token, err := client.BaseAuth.GetTokenForScopes(ctx, []string{scope})
-	if err != nil {
-		return nil, err
-	}
-
+func (client *ProviderClient) Execute(ctx context.Context, method string, url string, headers http.Header, body interface{}, acceptableStatusCodes []int, responseObj interface{}) (*ApiHttpResponse, error) {
 	var bodyBuffer io.Reader = nil
 	if body != nil {
 		bodyBytes, err := json.Marshal(body)
@@ -82,7 +32,7 @@ func (client *ApiClient) Execute(ctx context.Context, method string, url string,
 	if err != nil {
 		return nil, err
 	}
-	apiResponse, err := client.doRequest(token, request, headers)
+	apiResponse, err := client.doRequest(nil, request, headers)
 	if err != nil {
 		return nil, err
 	}
@@ -106,7 +56,7 @@ func (client *ApiClient) Execute(ctx context.Context, method string, url string,
 	return apiResponse, nil
 }
 
-func (client *ApiClient) doRequest(token *string, request *http.Request, headers http.Header) (*ApiHttpResponse, error) {
+func (client *ProviderClient) doRequest(token *string, request *http.Request, headers http.Header) (*ApiHttpResponse, error) {
 	apiHttpResponse := &ApiHttpResponse{}
 	if headers != nil {
 		request.Header = headers
