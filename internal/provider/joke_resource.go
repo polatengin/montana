@@ -126,6 +126,38 @@ func (r *JokeResource) Create(ctx context.Context, req resource.CreateRequest, r
 		return
 	}
 
+	response, err := r.client.Execute(ctx, "GET", fmt.Sprintf("https://v2.jokeapi.dev/joke/%s?blacklistFlags=nsfw,religious,political,racist,sexist,explicit&type=single", data.Category.ValueString()), nil, nil, []int{200})
+
+	if err != nil {
+		resp.Diagnostics.AddError("Failed to fetch joke", err.Error())
+		return
+	}
+
+	var model struct {
+		Id       int64  `json:"id"`
+		Safe     bool   `json:"safe"`
+		Language string `json:"lang"`
+		Error    bool   `json:"error"`
+		Category string `json:"category"`
+		Type     string `json:"type"`
+		Joke     string `json:"joke"`
+		Flags    struct {
+			Nsfw      bool `json:"nsfw"`
+			Religious bool `json:"religious"`
+			Political bool `json:"political"`
+			Racist    bool `json:"racist"`
+			Sexist    bool `json:"sexist"`
+			Explicit  bool `json:"explicit"`
+		} `json:"flags"`
+	}
+
+	err = json.Unmarshal(response.BodyAsBytes, &model)
+
+	if err != nil {
+		resp.Diagnostics.AddError("Failed to parse joke", err.Error())
+		return
+	}
+
 	data.Id = types.Int64Value(model.Id)
 	data.Text = types.StringValue(model.Joke)
 
