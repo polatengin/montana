@@ -12,43 +12,43 @@ import (
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ datasource.DataSource = &PalindromeDataSource{}
+var _ datasource.DataSource = &JokeDataSource{}
 
-func NewPalindromeDataSource() datasource.DataSource {
-	return &PalindromeDataSource{}
+func NewJokeDataSource() datasource.DataSource {
+	return &JokeDataSource{}
 }
 
-type PalindromeDataSource struct {
+type JokeDataSource struct {
 	client *api.ApiClient
 }
 
-type PalindromeDataSourceModel struct {
+type JokeDataSourceModel struct {
 	Text types.String `tfsdk:"text"`
 	Id   types.String `tfsdk:"id"`
 }
 
-func (d *PalindromeDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_palindrome"
+func (d *JokeDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_joke"
 }
 
-func (d *PalindromeDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+func (d *JokeDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Palindrome data source",
+		MarkdownDescription: "Joke data source",
 
 		Attributes: map[string]schema.Attribute{
 			"text": schema.StringAttribute{
-				MarkdownDescription: "Palindrome configurable attribute",
+				MarkdownDescription: "Joke configurable attribute",
 				Optional:            true,
 			},
 			"id": schema.StringAttribute{
-				MarkdownDescription: "Palindrome identifier",
+				MarkdownDescription: "Joke identifier",
 				Computed:            true,
 			},
 		},
 	}
 }
 
-func (d *PalindromeDataSource) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
+func (d *JokeDataSource) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -67,8 +67,8 @@ func (d *PalindromeDataSource) Configure(ctx context.Context, req datasource.Con
 	d.client = client
 }
 
-func (d *PalindromeDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var data PalindromeDataSourceModel
+func (d *JokeDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+	var data JokeDataSourceModel
 
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
 
@@ -76,7 +76,7 @@ func (d *PalindromeDataSource) Read(ctx context.Context, req datasource.ReadRequ
 		return
 	}
 
-	data.Id = types.StringValue("palindrome-id")
+	data.Id = types.StringValue("joke-id")
 
 	tflog.Trace(ctx, "read a data source")
 

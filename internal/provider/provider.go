@@ -64,7 +64,7 @@ func (p *MontanaProvider) Resources(ctx context.Context) []func() resource.Resou
 
 func (p *MontanaProvider) DataSources(ctx context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
-		NewPalindromeDataSource,
+		NewJokeDataSource,
 	}
 }
 
