@@ -53,6 +53,8 @@ func (r *JokeResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				Optional:            true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
+				},
+				Validators: loadCategoryValidators(r.client),
 			},
 			"id": schema.Int64Attribute{
 				Computed:            true,
@@ -63,6 +65,37 @@ func (r *JokeResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 			},
 		},
 	}
+}
+
+func loadCategoryValidators(apiClient *api.ApiClient) []validator.String {
+	validators := []validator.String{}
+
+	response, err := apiClient.Execute(context.Background(), "GET", "https://raw.githubusercontent.com/polatengin/montana/main/data/category_list.json", nil, nil, []int{200})
+
+	if err != nil {
+		tflog.Error(context.Background(), "Failed to load joke categories")
+	}
+
+	var model []struct {
+		Id   int64  `json:"id"`
+		Name string `json:"name"`
+	}
+
+	err = json.Unmarshal(response.BodyAsBytes, &model)
+
+	if err != nil {
+		tflog.Error(context.Background(), "Failed to parse joke categories")
+	}
+
+	categoryList := make([]string, len(model))
+
+	for i, category := range model {
+		categoryList[i] = category.Name
+	}
+
+	validators = append(validators, stringvalidator.OneOf(categoryList...))
+
+	return validators
 }
 
 func (r *JokeResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
