@@ -23,8 +23,8 @@ type PalindromeDataSource struct {
 }
 
 type PalindromeDataSourceModel struct {
-	ConfigurableAttribute types.String `tfsdk:"configurable_attribute"`
-	Id                    types.String `tfsdk:"id"`
+	Text types.String `tfsdk:"text"`
+	Id   types.String `tfsdk:"id"`
 }
 
 func (d *PalindromeDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
@@ -36,7 +36,7 @@ func (d *PalindromeDataSource) Schema(ctx context.Context, req datasource.Schema
 		MarkdownDescription: "Palindrome data source",
 
 		Attributes: map[string]schema.Attribute{
-			"configurable_attribute": schema.StringAttribute{
+			"text": schema.StringAttribute{
 				MarkdownDescription: "Palindrome configurable attribute",
 				Optional:            true,
 			},
