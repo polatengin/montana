@@ -2,13 +2,17 @@ package provider
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/polatengin/montana/internal/api"
@@ -26,8 +30,9 @@ type JokeResource struct {
 }
 
 type JokeResourceModel struct {
-	Text types.String `tfsdk:"text"`
-	Id   types.String `tfsdk:"id"`
+	Text     types.String `tfsdk:"text"`
+	Category types.String `tfsdk:"category"`
+	Id       types.Int64  `tfsdk:"id"`
 }
 
 func (r *JokeResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -43,11 +48,17 @@ func (r *JokeResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				MarkdownDescription: "Joke configurable attribute",
 				Optional:            true,
 			},
-			"id": schema.StringAttribute{
+			"category": schema.StringAttribute{
+				MarkdownDescription: "Joke category",
+				Optional:            true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+			},
+			"id": schema.Int64Attribute{
 				Computed:            true,
 				MarkdownDescription: "Joke identifier",
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.UseStateForUnknown(),
+				PlanModifiers: []planmodifier.Int64{
+					int64planmodifier.UseStateForUnknown(),
 				},
 			},
 		},
@@ -82,7 +93,8 @@ func (r *JokeResource) Create(ctx context.Context, req resource.CreateRequest, r
 		return
 	}
 
-	data.Id = types.StringValue("joke-id")
+	data.Id = types.Int64Value(model.Id)
+	data.Text = types.StringValue(model.Joke)
 
 	tflog.Trace(ctx, "created a resource")
 
