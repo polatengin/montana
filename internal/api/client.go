@@ -17,7 +17,7 @@ type ApiHttpResponse struct {
 	BodyAsBytes []byte
 }
 
-func (client *ApiClient) Execute(ctx context.Context, method string, url string, headers http.Header, body interface{}, acceptableStatusCodes []int, responseObj interface{}) (*ApiHttpResponse, error) {
+func (client *ApiClient) Execute(ctx context.Context, method string, url string, headers http.Header, body interface{}, acceptableStatusCodes []int) (*ApiHttpResponse, error) {
 	var bodyBuffer io.Reader = nil
 	if body != nil {
 		bodyBytes, err := json.Marshal(body)
@@ -79,19 +79,5 @@ func (client *ApiClient) Execute(ctx context.Context, method string, url string,
 	if !isStatusCodeValid {
 		return nil, fmt.Errorf("expected status code: %d, recieved: %d", acceptableStatusCodes, apiHttpResponse.Response.StatusCode)
 	}
-	if responseObj != nil {
-		err = apiHttpResponse.MarshallTo(responseObj)
-		if err != nil {
-			return nil, err
-		}
-	}
 	return apiHttpResponse, nil
-}
-
-func (apiResponse *ApiHttpResponse) MarshallTo(obj interface{}) error {
-	err := json.NewDecoder(bytes.NewReader(apiResponse.BodyAsBytes)).Decode(&obj)
-	if err != nil {
-		return err
-	}
-	return nil
 }
