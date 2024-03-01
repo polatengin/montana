@@ -27,8 +27,7 @@ type PalindromeResource struct {
 }
 
 type PalindromeResourceModel struct {
-	ConfigurableAttribute types.String `tfsdk:"configurable_attribute"`
-	Defaulted             types.String `tfsdk:"defaulted"`
+	ConfigurableAttribute types.String `tfsdk:"text"`
 	Id                    types.String `tfsdk:"id"`
 }
 
@@ -41,15 +40,9 @@ func (r *PalindromeResource) Schema(ctx context.Context, req resource.SchemaRequ
 		MarkdownDescription: "Palindrome resource",
 
 		Attributes: map[string]schema.Attribute{
-			"configurable_attribute": schema.StringAttribute{
+			"text": schema.StringAttribute{
 				MarkdownDescription: "Palindrome configurable attribute",
 				Optional:            true,
-			},
-			"defaulted": schema.StringAttribute{
-				MarkdownDescription: "Palindrome configurable attribute with default value",
-				Optional:            true,
-				Computed:            true,
-				Default:             stringdefault.StaticString("Palindrome value when not configured"),
 			},
 			"id": schema.StringAttribute{
 				Computed:            true,
