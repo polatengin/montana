@@ -20,11 +20,7 @@ type MontanaProvider struct {
 }
 
 type MontanaProviderModel struct {
-	UseCli types.Bool `tfsdk:"use_cli"`
-
-	TenantId     types.String `tfsdk:"tenant_id"`
-	ClientId     types.String `tfsdk:"client_id"`
-	ClientSecret types.String `tfsdk:"client_secret"`
+	Token types.String `tfsdk:"token"`
 }
 
 func (p *MontanaProvider) Metadata(ctx context.Context, req provider.MetadataRequest, resp *provider.MetadataResponse) {
@@ -36,24 +32,9 @@ func (p *MontanaProvider) Schema(ctx context.Context, req provider.SchemaRequest
 		Description:         "Montana Provider",
 		MarkdownDescription: "Montana Provider",
 		Attributes: map[string]schema.Attribute{
-			"use_cli": schema.BoolAttribute{
-				Description:         "Flag to indicate whether to use the CLI for authentication",
-				MarkdownDescription: "Flag to indicate whether to use the CLI for authentication. ",
-				Optional:            true,
-			},
-			"tenant_id": schema.StringAttribute{
-				Description:         "The id of the AAD tenant that Montana uses to authenticate with",
-				MarkdownDescription: "The id of the AAD tenant that Montana uses to authenticate with",
-				Optional:            true,
-			},
-			"client_id": schema.StringAttribute{
-				Description:         "The client id of the Montana app registration",
-				MarkdownDescription: "The client id of the Montana app registration",
-				Optional:            true,
-			},
-			"client_secret": schema.StringAttribute{
-				Description:         "The secret of the Montana app registration",
-				MarkdownDescription: "The secret of the Montana app registration",
+			"token": schema.StringAttribute{
+				Description:         "Joke Api token",
+				MarkdownDescription: "Joke Api token",
 				Optional:            true,
 				Sensitive:           true,
 			},
@@ -77,7 +58,7 @@ func (p *MontanaProvider) Configure(ctx context.Context, req provider.ConfigureR
 
 func (p *MontanaProvider) Resources(ctx context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
-		NewPalindromeResource,
+		NewJokeResource,
 	}
 }
 
