@@ -23,6 +23,6 @@ func TestAccPalindromeDataSource(t *testing.T) {
 
 const testAccPalindromeDataSourceConfig = `
 data "montana_palindrome" "test" {
-  configurable_attribute = "palindrome"
+  text = "palindrome"
 }
 `
