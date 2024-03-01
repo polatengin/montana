@@ -13,7 +13,6 @@ TARGET_DIR := resources
 TARGET_COMMAND := apply -auto-approve
 endif
 
-
 default: build
 
 .PHONY: help
@@ -29,7 +28,8 @@ help:
 .PHONY: clean
 clean:
 	@echo "Cleaning..."
-	@rm -rf .bin/
+	@rm -rf ./.bin/
+	@rm -rf ./examples/resources/montana_joke/*.tfstate
 
 .PHONY: build
 build:
