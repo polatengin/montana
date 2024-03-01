@@ -14,38 +14,38 @@ import (
 	"github.com/polatengin/montana/internal/api"
 )
 
-var _ resource.Resource = &PalindromeResource{}
-var _ resource.ResourceWithImportState = &PalindromeResource{}
+var _ resource.Resource = &JokeResource{}
+var _ resource.ResourceWithImportState = &JokeResource{}
 
-func NewPalindromeResource() resource.Resource {
-	return &PalindromeResource{}
+func NewJokeResource() resource.Resource {
+	return &JokeResource{}
 }
 
-type PalindromeResource struct {
+type JokeResource struct {
 	client *api.ApiClient
 }
 
-type PalindromeResourceModel struct {
+type JokeResourceModel struct {
 	ConfigurableAttribute types.String `tfsdk:"text"`
 	Id                    types.String `tfsdk:"id"`
 }
 
-func (r *PalindromeResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_palindrome"
+func (r *JokeResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_joke"
 }
 
-func (r *PalindromeResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *JokeResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Palindrome resource",
+		MarkdownDescription: "Joke resource",
 
 		Attributes: map[string]schema.Attribute{
 			"text": schema.StringAttribute{
-				MarkdownDescription: "Palindrome configurable attribute",
+				MarkdownDescription: "Joke configurable attribute",
 				Optional:            true,
 			},
 			"id": schema.StringAttribute{
 				Computed:            true,
-				MarkdownDescription: "Palindrome identifier",
+				MarkdownDescription: "Joke identifier",
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
@@ -54,7 +54,7 @@ func (r *PalindromeResource) Schema(ctx context.Context, req resource.SchemaRequ
 	}
 }
 
-func (r *PalindromeResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *JokeResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -73,8 +73,8 @@ func (r *PalindromeResource) Configure(ctx context.Context, req resource.Configu
 	r.client = client
 }
 
-func (r *PalindromeResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data PalindromeResourceModel
+func (r *JokeResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var data JokeResourceModel
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
 
@@ -82,15 +82,15 @@ func (r *PalindromeResource) Create(ctx context.Context, req resource.CreateRequ
 		return
 	}
 
-	data.Id = types.StringValue("palindrome-id")
+	data.Id = types.StringValue("joke-id")
 
 	tflog.Trace(ctx, "created a resource")
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *PalindromeResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data PalindromeResourceModel
+func (r *JokeResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var data JokeResourceModel
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
 
@@ -101,8 +101,8 @@ func (r *PalindromeResource) Read(ctx context.Context, req resource.ReadRequest,
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *PalindromeResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data PalindromeResourceModel
+func (r *JokeResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var data JokeResourceModel
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
 
@@ -113,8 +113,8 @@ func (r *PalindromeResource) Update(ctx context.Context, req resource.UpdateRequ
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *PalindromeResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var data PalindromeResourceModel
+func (r *JokeResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var data JokeResourceModel
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
 
@@ -123,6 +123,6 @@ func (r *PalindromeResource) Delete(ctx context.Context, req resource.DeleteRequ
 	}
 }
 
-func (r *PalindromeResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *JokeResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }

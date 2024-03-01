@@ -7,17 +7,17 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
-func TestAccPalindromeResource(t *testing.T) {
-	resourceName := "montana_palindrome.test"
+func TestAccJokeResource(t *testing.T) {
+	resourceName := "montana_joke.test"
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccPalindromeResourceConfig("one"),
+				Config: testAccJokeResourceConfig("one"),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(resourceName, "text", "one"),
-					resource.TestCheckResourceAttr(resourceName, "id", "palindrome-id"),
+					resource.TestCheckResourceAttr(resourceName, "id", "joke-id"),
 				),
 			},
 			{
@@ -27,7 +27,7 @@ func TestAccPalindromeResource(t *testing.T) {
 				ImportStateVerifyIgnore: []string{"text"},
 			},
 			{
-				Config: testAccPalindromeResourceConfig("two"),
+				Config: testAccJokeResourceConfig("two"),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(resourceName, "text", "two"),
 				),
@@ -36,9 +36,9 @@ func TestAccPalindromeResource(t *testing.T) {
 	})
 }
 
-func testAccPalindromeResourceConfig(configurableAttribute string) string {
+func testAccJokeResourceConfig(configurableAttribute string) string {
 	return fmt.Sprintf(`
-resource "montana_palindrome" "test" {
+resource "montana_joke" "test" {
   text = %[1]q
 }
 `, configurableAttribute)
