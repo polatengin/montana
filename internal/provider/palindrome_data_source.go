@@ -19,7 +19,7 @@ func NewPalindromeDataSource() datasource.DataSource {
 }
 
 type PalindromeDataSource struct {
-	client *api.ProviderClient
+	client *api.ApiClient
 }
 
 type PalindromeDataSourceModel struct {
@@ -53,7 +53,7 @@ func (d *PalindromeDataSource) Configure(ctx context.Context, req datasource.Con
 		return
 	}
 
-	client, ok := req.ProviderData.(*api.ProviderClient)
+	client, ok := req.ProviderData.(*api.ApiClient)
 
 	if !ok {
 		resp.Diagnostics.AddError(

@@ -16,7 +16,7 @@ var _ provider.Provider = &MontanaProvider{}
 var _ provider.ProviderWithFunctions = &MontanaProvider{}
 
 type MontanaProvider struct {
-	Api *api.ProviderClient
+	Api *api.ApiClient
 }
 
 type MontanaProviderModel struct {
@@ -70,7 +70,7 @@ func (p *MontanaProvider) Configure(ctx context.Context, req provider.ConfigureR
 		return
 	}
 
-	providerClient := api.ProviderClient{}
+	providerClient := api.ApiClient{}
 	resp.DataSourceData = &providerClient
 	resp.ResourceData = &providerClient
 }

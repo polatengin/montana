@@ -22,7 +22,7 @@ func NewPalindromeResource() resource.Resource {
 }
 
 type PalindromeResource struct {
-	client *api.ProviderClient
+	client *api.ApiClient
 }
 
 type PalindromeResourceModel struct {
@@ -59,7 +59,7 @@ func (r *PalindromeResource) Configure(ctx context.Context, req resource.Configu
 		return
 	}
 
-	client, ok := req.ProviderData.(*api.ProviderClient)
+	client, ok := req.ProviderData.(*api.ApiClient)
 
 	if !ok {
 		resp.Diagnostics.AddError(
