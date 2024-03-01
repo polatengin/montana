@@ -16,8 +16,7 @@ func TestAccPalindromeResource(t *testing.T) {
 			{
 				Config: testAccPalindromeResourceConfig("one"),
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr(resourceName, "configurable_attribute", "one"),
-					resource.TestCheckResourceAttr(resourceName, "defaulted", "palindrome value when not configured"),
+					resource.TestCheckResourceAttr(resourceName, "text", "one"),
 					resource.TestCheckResourceAttr(resourceName, "id", "palindrome-id"),
 				),
 			},
@@ -25,12 +24,12 @@ func TestAccPalindromeResource(t *testing.T) {
 				ResourceName:            resourceName,
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateVerifyIgnore: []string{"configurable_attribute", "defaulted"},
+				ImportStateVerifyIgnore: []string{"text"},
 			},
 			{
 				Config: testAccPalindromeResourceConfig("two"),
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr(resourceName, "configurable_attribute", "two"),
+					resource.TestCheckResourceAttr(resourceName, "text", "two"),
 				),
 			},
 		},
@@ -40,7 +39,7 @@ func TestAccPalindromeResource(t *testing.T) {
 func testAccPalindromeResourceConfig(configurableAttribute string) string {
 	return fmt.Sprintf(`
 resource "montana_palindrome" "test" {
-  configurable_attribute = %[1]q
+  text = %[1]q
 }
 `, configurableAttribute)
 }
